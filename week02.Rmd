@@ -1,0 +1,50 @@
+---
+title: "ANA 515 Assignment 1"
+author: Lujie Wang
+date: 2022
+output: 
+  html_document:
+    theme: 
+      bootswatch: lumen 
+      thumbnails: true
+      lightbox: true
+      highlight: tango
+---
+
+
+```{r, include = TRUE}
+
+library(tidyverse)
+library(knitr)
+library(bslib)
+url <- 'https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv'
+gun_deaths <- read_csv(url)
+```
+
+```{r, echo = FALSE}
+youth <- filter(gun_deaths, age <= 65)
+```
+
+
+``` {r, echo = FALSE}
+glimpse(youth)
+```
+
+
+We have data about `r nrow(gun_deaths)` individuals killed by guns. Only `r nrow(gun_deaths) - nrow(youth) ` are older than 65. The distribution of the remainder is shown below: 
+
+```{r youth-dist, echo = FALSE}
+
+youth %>% 
+ggplot(aes(age)) + 
+geom_freqpoly(binwidth = 1) 
+
+```
+
+```{r race-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(fct_infreq(race) %>% fct_rev())) + 
+geom_bar() + coord_flip() + 
+labs(x = "Victim race") 
+```
+
